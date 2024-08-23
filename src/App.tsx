@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
 import Todo from './pages/todo';
+import Router from './components/router';
 
 function App() {
   return (
     <div className="App">
-      <Todo />
+      <Router/>
     </div>
   );
 }
