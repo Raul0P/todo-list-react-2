@@ -1,38 +1,37 @@
 import React, { useState } from "react";
 import Todo from "../../pages/todo";
-import Home from "../../pages/home";
-import Sobre from "../../pages/sobre";
 
-enum routes  {
-    home = 'home',
-    todo = 'todo',
-    sobre = 'sobre'
+enum RouterPages {
+    'home' = 'home',
+    'todo' = 'todo',
+    'sobre' = 'sobre'
 }
 
 const Router = () => {
-    const [getRoute, setRoute] = useState<routes>(routes.home);
-
-    const renderizarPagina = (rotaDaPagina: routes) => {
-        switch (rotaDaPagina){
-            case routes.home: return <Home/>
-            case routes.todo: return <Todo/>
-            case routes.sobre: return <Sobre/>
-            default: return <Todo/>  
-        }
-    }
-
-    const renderizarHeader = () => (
+    const [getPaginaAtual, setPaginaAtual] = 
+        useState<RouterPages>(RouterPages.home)
+    
+    const renderizarBotoes = () => (
         <div>
-            <button onClick={() => setRoute(routes.home)}>Inicio</button>
-            <button onClick={() => setRoute(routes.todo)}>Todo</button>
-            <button onClick={() => setRoute(routes.sobre)}>Sobre</button>
+            <button onClick={() => setPaginaAtual(RouterPages.home)}>Inicio</button>
+            <button onClick={() => setPaginaAtual(RouterPages.todo)}>Todo</button>
+            <button onClick={() => setPaginaAtual(RouterPages.sobre)}>Sobre</button>
         </div>
     )
 
+    const renderizarPagina = () => {
+        switch (getPaginaAtual) {
+            case RouterPages.home: return <div><h1>Inicio</h1></div>
+            case RouterPages.todo: return <Todo />
+            case RouterPages.sobre: return <div><h1>Sobre</h1></div>
+            default: return <div><h1>Inicio</h1></div>
+        }
+    }
+
     return (
         <div>
-            {renderizarHeader()}
-            {renderizarPagina(getRoute)}
+            {renderizarBotoes()}
+            {renderizarPagina()}
         </div>
     )
 }
