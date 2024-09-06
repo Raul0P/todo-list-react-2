@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
+import { ContextoTema } from '../../context/contextTema';
 
 const Sobre = () => {
+
+  const tema = useContext(ContextoTema)
+
+    useEffect(() => {
+        console.log('tema sobre: ', tema)
+    }, [tema])
+
   return (
     <div style={{ padding: '20px', textAlign: 'center' }}>
       <h1>Sobre o Criador</h1>
+      <h2>{tema}</h2>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
         <img 
           src="https://pbs.twimg.com/media/EKTMUVJXUAAQHLp.jpg" 

@@ -1,31 +1,63 @@
-import React, { useState } from 'react';
-import './styles.css';
-import { TodoProps } from '../../@types/todo';
-import CriarTodo from '../../components/criarTodo';
-import TodoList from '../../components/todolist';
+import React, { useContext, useState } from 'react'
+import TodoList from '../../components/todolist'
+import CriarTodo from '../../components/criarTodo'
+import { TodoProps } from '../../@types/todo'
+import { ContextoTodo } from '../../context/contextTodo'
+import { ContextoTema } from '../../context/contextTema'
 
-function Todo() {
-  const [getTodos, setTodos] = useState<TodoProps[]>([
-    { id: 1, titulo: 'tarefa 1'},
-    { id: 2, titulo: 'tarefa 2'},
-    { id: 3, titulo: 'tarefa 3'},
-    { id: 4, titulo: 'tarefa 4'},
-    { id: 5, titulo: 'tarefa 5'}
-  ])
+enum TodoPages {
+  'criarTodo' = 'criarTodo',
+  'listarTodo' = 'listarTodo'
+}
 
-  return (
-    <div>
-      <CriarTodo criarTodo={(novoTodo: TodoProps) => {
-        const id: number  = getTodos.length + 1
-        novoTodo.id = id
-        const tmpTodos: TodoProps[] = [...getTodos, novoTodo]
-        setTodos(tmpTodos)
-      }} />
-      <TodoList 
-        getTodos={getTodos} 
-        setTodos={(novaLista: TodoProps[]) => setTodos(novaLista)} />
-    </div>
-  );
+const Todo = () => {
+    const tema = useContext(ContextoTema)
+    const todos = useContext(ContextoTodo)
+    const [getTodos, setTodos] = useState<TodoProps[]>(todos)
+    
+    const [getPaginaAtual, setPaginaAtual] = useState<TodoPages>(TodoPages.listarTodo);
+
+    const renderizarPagina = () => {
+      switch (getPaginaAtual) {
+        case TodoPages.criarTodo:
+          return (
+            <CriarTodo criarTodo={(novoTodo: TodoProps) => {
+              const id: number  = getTodos.length + 1
+              novoTodo.id = id
+              const tmpTodos: TodoProps[] = [...getTodos, novoTodo]
+              setTodos(tmpTodos)
+              // setPaginaAtual(TodoPages.listarTodo)
+            }} />
+          )
+        case TodoPages.listarTodo:
+          return (
+            <TodoList
+              getTodos={getTodos} 
+              setTodos={(novaLista: TodoProps[]) => setTodos(novaLista)} />
+          )
+        default:
+          return (
+            <TodoList
+              getTodos={getTodos} 
+              setTodos={(novaLista: TodoProps[]) => setTodos(novaLista)} />
+          )
+      }
+    }
+
+    const renderizarBotoes = () => (
+      <div>
+        <button onClick={() => setPaginaAtual(TodoPages.listarTodo)}>Lista de tarefas</button>
+        <button onClick={() => setPaginaAtual(TodoPages.criarTodo)}>Criar tarefa</button>
+      </div>
+    )
+
+    return (
+      <div style={{ textAlign: 'center' }}>
+        <h2>{tema}</h2>
+        {renderizarBotoes()}
+        {renderizarPagina()}
+      </div>
+    );
 }
 
 export default Todo;

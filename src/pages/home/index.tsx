@@ -1,8 +1,16 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
+import { ContextoTema } from '../../context/contextTema';
 
 const Home = () => {
+  const tema = useContext(ContextoTema)
+
+  useEffect(() => {
+      console.log('tema home: ', tema)
+  }, [tema])
+
   return (
     <div style={{ padding: '20px' }}>
+      <h1>{tema}</h1>
       <h1>Bem-vindo ao nosso TodoList</h1>
       <p>
         Um TodoList é uma ferramenta simples que permite que você organize suas tarefas diárias.
